@@ -1,6 +1,8 @@
 const express = require('express');
 const connectDB = require('./config/db');
-const graphqlServer = require('./graphql');
+const { ApolloServer } = require('apollo-server-express');
+const typeDefs = require('./graphql/schema/typeDefs');
+const resolvers  = require('./graphql/resolvers/index');
 
 
 const app = express();
@@ -8,6 +10,16 @@ const app = express();
 //connect database
 connectDB();
 
-app.use('graphql', graphqlServer);
+const server = new ApolloServer({
+    typeDefs,
+    resolvers
+})
+
+async function startServer() {
+    await server.start();
+    server.applyMiddleware({app});
+}
+
+startServer();
 
 module.exports = app;
