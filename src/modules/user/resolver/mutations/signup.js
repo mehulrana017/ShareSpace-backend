@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 const signUp = async (parent, args, context, info) => {
   const { models } = context;
 
@@ -19,12 +21,14 @@ const signUp = async (parent, args, context, info) => {
 
   // Create new user
   const newUser = new UserModel({
-    username,
+    username: username ?? email,
     email,
-    password,
+    password: bcrypt.hashSync(password, 10),
   });
 
   await newUser.save();
+
+  return newUser;
 
   // TODO: add JWT token
 };

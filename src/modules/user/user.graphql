@@ -10,6 +10,16 @@ input SignUpInput {
   password: String!
 }
 
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+type LoginResponse {
+  token: String!
+  user: User!
+}
+
 type Query {
   getUser(id: ID!): User
   getUsers: [User]
@@ -17,4 +27,5 @@ type Query {
 
 type Mutation {
   signUp(input: SignUpInput!): User
+  login(input: LoginInput!): LoginResponse
 }
